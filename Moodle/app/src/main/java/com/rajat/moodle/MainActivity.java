@@ -13,10 +13,20 @@ import com.rajat.moodle.Volley.CallVolley;
 import com.rajat.moodle.Volley.VolleySingleton;
 
 public class MainActivity extends AppCompatActivity {
-    Button login,logout,notifyButton,courseAssignmentButton,
-        listCoursesButton,viewGradesButton,listAllCourseAssignmentButton,
-        viewCourseGradesButton,viewCourseThreadsButton,viewParticularThreadButton,
+    Button  login,logout,notifyButton,courseAssignmentButton,
+            listCoursesButton,viewGradesButton,listAllCourseAssignmentButton,
+            viewCourseGradesButton,viewCourseThreadsButton,viewParticularThreadButton,
             createNewThreadButton,postNewCommentButton ;
+        int Notification=1,
+            CourseAssignment=2,
+            CourseList=3,
+            ViewGrades=4,
+            listAllCourseAssignment=5,
+            viewCourseGrades=6,
+            viewCourseThreads=7,
+            viewParticularThread=8,
+            createNewThread=9,
+            postNewComment=10;
     public static final String MyPREFERENCES = "MyPrefs" ;
     public static SharedPreferences sharedpreferences;
     public static SharedPreferences.Editor editor ;
@@ -119,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         String URL = "http://192.168.43.200/threads/post_comment.json?thread_id="+thread_id+"&description="+description;
         if (!chkNet.checkNetwork()) {
             VolleySingleton.getInstance(MainActivity.this).getRequestQueue().getCache().clear();
-            CallVolley.postNewCommentCall(URL, MainActivity.this);
+            CallVolley.afterLoginCall(URL, MainActivity.this, postNewComment);
         } else {
             Tools.showAlertDialog("Internet Available", MainActivity.this);
         }
@@ -129,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
         String URL = "http://192.168.43.200/threads/new.json?title="+title+"&description="+description+"&course_code="+course_code;
         if (!chkNet.checkNetwork()) {
             VolleySingleton.getInstance(MainActivity.this).getRequestQueue().getCache().clear();
-            CallVolley.createNewThreadCall(URL, MainActivity.this);
+            CallVolley.afterLoginCall(URL, MainActivity.this, createNewThread);
         } else {
             Tools.showAlertDialog("Internet Available", MainActivity.this);
         }
@@ -139,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         String URL = "http://192.168.43.200/threads/thread.json/"+thread_id;
         if (!chkNet.checkNetwork()) {
             VolleySingleton.getInstance(MainActivity.this).getRequestQueue().getCache().clear();
-            CallVolley.viewParticularThreadCall(URL, MainActivity.this);
+            CallVolley.afterLoginCall(URL, MainActivity.this, viewParticularThread);
         } else {
             Tools.showAlertDialog("Internet Available", MainActivity.this);
         }
@@ -149,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         String URL = "http://192.168.43.200/default/grades.json";
         if (!chkNet.checkNetwork()) {
             VolleySingleton.getInstance(MainActivity.this).getRequestQueue().getCache().clear();
-            CallVolley.viewGradesCall(URL, MainActivity.this);
+            CallVolley.afterLoginCall(URL, MainActivity.this, ViewGrades);
         } else {
             Tools.showAlertDialog("Internet Available", MainActivity.this);
         }
@@ -159,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
         String URL = "http://192.168.43.200/courses/list.json";
         if (!chkNet.checkNetwork()) {
             VolleySingleton.getInstance(MainActivity.this).getRequestQueue().getCache().clear();
-            CallVolley.getCourseListCall(URL, MainActivity.this);
+            CallVolley.afterLoginCall(URL, MainActivity.this, CourseList);
         } else {
             Tools.showAlertDialog("Internet Available", MainActivity.this);
         }
@@ -191,7 +201,7 @@ public void onLoginClick(){
         if (!chkNet.checkNetwork()) {
             VolleySingleton.getInstance(MainActivity.this).getRequestQueue().getCache().clear();
 
-            CallVolley.getNotificationCall(URL, MainActivity.this);
+            CallVolley.afterLoginCall(URL, MainActivity.this, Notification);
         } else {
             Tools.showAlertDialog("Internet Available", MainActivity.this);
         }
@@ -203,7 +213,7 @@ public void viewCourseThreads(String courseCode){
     String URL = "http://192.168.43.200/courses/course.json/"+courseCode+"/threads";
     if (!chkNet.checkNetwork()) {
         VolleySingleton.getInstance(MainActivity.this).getRequestQueue().getCache().clear();
-        CallVolley.viewCourseThreadsCall(URL, MainActivity.this);
+        CallVolley.afterLoginCall(URL, MainActivity.this, viewCourseThreads);
     } else {
         Tools.showAlertDialog("Internet Available", MainActivity.this);
     }
@@ -213,7 +223,7 @@ public void viewCourseGrades(String courseCode){
     String URL = "http://192.168.43.200/courses/course.json/"+courseCode+"/grades";
     if (!chkNet.checkNetwork()) {
         VolleySingleton.getInstance(MainActivity.this).getRequestQueue().getCache().clear();
-        CallVolley.viewCourseGradesCall(URL, MainActivity.this);
+        CallVolley.afterLoginCall(URL, MainActivity.this, viewCourseGrades);
     } else {
         Tools.showAlertDialog("Internet Available", MainActivity.this);
     }
@@ -223,7 +233,7 @@ public void listAllCourseAssignment(String courseCode){
     String URL = "http://192.168.43.200/courses/course.json/"+courseCode+"/assignments";
     if (!chkNet.checkNetwork()) {
         VolleySingleton.getInstance(MainActivity.this).getRequestQueue().getCache().clear();
-        CallVolley.listAllCourseAssignmentCall(URL, MainActivity.this);
+        CallVolley.afterLoginCall(URL, MainActivity.this, listAllCourseAssignment);
     } else {
         Tools.showAlertDialog("Internet Available", MainActivity.this);
     }
@@ -233,10 +243,9 @@ public void listAllCourseAssignment(String courseCode){
         String URL = "http://192.168.43.200/courses/assignment.json/"+number;
         if (!chkNet.checkNetwork()) {
             VolleySingleton.getInstance(MainActivity.this).getRequestQueue().getCache().clear();
-            CallVolley.getCourseAssignmentCall(URL, MainActivity.this);
+            CallVolley.afterLoginCall(URL, MainActivity.this, CourseAssignment);
         } else {
             Tools.showAlertDialog("Internet Available", MainActivity.this);
         }
     }
-
 }
