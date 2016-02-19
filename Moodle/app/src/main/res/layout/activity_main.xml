@@ -3,11 +3,10 @@
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:orientation="vertical"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+    android:paddingTop="0dp"
+    android:paddingBottom="0dp" tools:context=".MainActivity">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
     <Button
         android:id="@+id/login"
         android:text="LOGIN"
@@ -36,6 +35,37 @@
     <Button
         android:id="@+id/courseAssignment"
         android:text="Course Assignemnt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/listAllCourseAssignment"
+        android:text="Course All Assignemnt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/viewCourseGrades"
+        android:text="View Course Grades"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/viewCourseThreads"
+        android:text="View Course Threads"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/viewParticularThread"
+        android:text="View Particular Thread"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/createNewThread"
+        android:text="Create New Thread"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/postNewComment"
+        android:text="Post New Comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 </LinearLayout>

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -14,9 +12,11 @@ import com.rajat.moodle.Tools.Tools;
 import com.rajat.moodle.Volley.CallVolley;
 import com.rajat.moodle.Volley.VolleySingleton;
 
-
 public class MainActivity extends AppCompatActivity {
-Button login,logout,notifyButton,courseAssignmentButton,listCoursesButton,viewGradesButton;
+    Button login,logout,notifyButton,courseAssignmentButton,
+        listCoursesButton,viewGradesButton,listAllCourseAssignmentButton,
+        viewCourseGradesButton,viewCourseThreadsButton,viewParticularThreadButton,
+            createNewThreadButton,postNewCommentButton ;
     public static final String MyPREFERENCES = "MyPrefs" ;
     public static SharedPreferences sharedpreferences;
     public static SharedPreferences.Editor editor ;
@@ -68,6 +68,81 @@ Button login,logout,notifyButton,courseAssignmentButton,listCoursesButton,viewGr
                 getCourseAssignmentDetails(1);
             }
         });
+        listAllCourseAssignmentButton= (Button) findViewById(R.id.listAllCourseAssignment);
+        listAllCourseAssignmentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listAllCourseAssignment("cop290");
+            }
+        });
+        viewCourseGradesButton= (Button) findViewById(R.id.viewCourseGrades);
+        viewCourseGradesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCourseGrades("cop290");
+            }
+        });
+        viewCourseThreadsButton= (Button) findViewById(R.id.viewCourseThreads);
+        viewCourseThreadsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewCourseThreads("cop290");
+            }
+        });
+        viewParticularThreadButton= (Button) findViewById(R.id.viewParticularThread);
+        viewParticularThreadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewParticularThread(1);
+            }
+        });
+        //createNewThread
+        createNewThreadButton= (Button) findViewById(R.id.createNewThread);
+        createNewThreadButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createNewThread("Raja", "Maharaja", "cop290");
+            }
+        });
+        postNewCommentButton= (Button) findViewById(R.id.postNewComment);
+        postNewCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                postNewComment(7,"Maharaja");
+            }
+        });
+        //postNewComment
+    }
+    //postNewCommentCall
+    public void postNewComment(int thread_id,String description){
+        CheckNetwork chkNet = new CheckNetwork(MainActivity.this);
+        String URL = "http://192.168.43.200/threads/post_comment.json?thread_id="+thread_id+"&description="+description;
+        if (!chkNet.checkNetwork()) {
+            VolleySingleton.getInstance(MainActivity.this).getRequestQueue().getCache().clear();
+            CallVolley.postNewCommentCall(URL, MainActivity.this);
+        } else {
+            Tools.showAlertDialog("Internet Available", MainActivity.this);
+        }
+    }
+    public void createNewThread(String title,String description,String course_code){
+        CheckNetwork chkNet = new CheckNetwork(MainActivity.this);
+        String URL = "http://192.168.43.200/threads/new.json?title="+title+"&description="+description+"&course_code="+course_code;
+        if (!chkNet.checkNetwork()) {
+            VolleySingleton.getInstance(MainActivity.this).getRequestQueue().getCache().clear();
+            CallVolley.createNewThreadCall(URL, MainActivity.this);
+        } else {
+            Tools.showAlertDialog("Internet Available", MainActivity.this);
+        }
+    }
+    public void viewParticularThread(int thread_id){
+        CheckNetwork chkNet = new CheckNetwork(MainActivity.this);
+        String URL = "http://192.168.43.200/threads/thread.json/"+thread_id;
+        if (!chkNet.checkNetwork()) {
+            VolleySingleton.getInstance(MainActivity.this).getRequestQueue().getCache().clear();
+            CallVolley.viewParticularThreadCall(URL, MainActivity.this);
+        } else {
+            Tools.showAlertDialog("Internet Available", MainActivity.this);
+        }
     }
     public void viewAllGrades(){
         CheckNetwork chkNet = new CheckNetwork(MainActivity.this);
@@ -121,7 +196,38 @@ public void onLoginClick(){
             Tools.showAlertDialog("Internet Available", MainActivity.this);
         }
     }
-
+//
+    //viewCourseThreadsCall
+public void viewCourseThreads(String courseCode){
+    CheckNetwork chkNet = new CheckNetwork(MainActivity.this);
+    String URL = "http://192.168.43.200/courses/course.json/"+courseCode+"/threads";
+    if (!chkNet.checkNetwork()) {
+        VolleySingleton.getInstance(MainActivity.this).getRequestQueue().getCache().clear();
+        CallVolley.viewCourseThreadsCall(URL, MainActivity.this);
+    } else {
+        Tools.showAlertDialog("Internet Available", MainActivity.this);
+    }
+}
+public void viewCourseGrades(String courseCode){
+    CheckNetwork chkNet = new CheckNetwork(MainActivity.this);
+    String URL = "http://192.168.43.200/courses/course.json/"+courseCode+"/grades";
+    if (!chkNet.checkNetwork()) {
+        VolleySingleton.getInstance(MainActivity.this).getRequestQueue().getCache().clear();
+        CallVolley.viewCourseGradesCall(URL, MainActivity.this);
+    } else {
+        Tools.showAlertDialog("Internet Available", MainActivity.this);
+    }
+}
+public void listAllCourseAssignment(String courseCode){
+    CheckNetwork chkNet = new CheckNetwork(MainActivity.this);
+    String URL = "http://192.168.43.200/courses/course.json/"+courseCode+"/assignments";
+    if (!chkNet.checkNetwork()) {
+        VolleySingleton.getInstance(MainActivity.this).getRequestQueue().getCache().clear();
+        CallVolley.listAllCourseAssignmentCall(URL, MainActivity.this);
+    } else {
+        Tools.showAlertDialog("Internet Available", MainActivity.this);
+    }
+}
     public void getCourseAssignmentDetails(int number){
         CheckNetwork chkNet = new CheckNetwork(MainActivity.this);
         String URL = "http://192.168.43.200/courses/assignment.json/"+number;
@@ -133,25 +239,4 @@ public void onLoginClick(){
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }
