@@ -9,13 +9,14 @@
         <item name="colorControlActivated">@android:color/holo_red_dark</item>
 
 
-
     </style>
+
     <style name="tool" parent="Theme.AppCompat.Light">
         <item name="windowActionBar">false</item>
         <item name="colorPrimaryDark">@color/lightRed</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="reg" parent="Theme.AppCompat.Light">
         <item name="android:textColorLink">@android:color/holo_red_dark</item>
         <item name="android:textColor">@color/whitecolor</item>
@@ -31,4 +32,8 @@
         <item name="colorControlHighlight">@android:color/holo_red_dark</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="reg.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="reg.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
