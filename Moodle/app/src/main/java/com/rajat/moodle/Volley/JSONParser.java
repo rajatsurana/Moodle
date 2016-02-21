@@ -1,8 +1,12 @@
 package com.rajat.moodle.Volley;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
+import com.rajat.moodle.After_login;
 import com.rajat.moodle.Objects.AssignmentObject;
 import com.rajat.moodle.Objects.CommentsObject;
 import com.rajat.moodle.Objects.CourseObject;
@@ -11,11 +15,18 @@ import com.rajat.moodle.Objects.GradeObject;
 import com.rajat.moodle.Objects.NotificationObject;
 import com.rajat.moodle.Objects.SubmissionObject;
 import com.rajat.moodle.Objects.UsersObject;
+import com.rajat.moodle.R;
 import com.rajat.moodle.Tools.Tools;
+import com.rajat.moodle.grade_fragment;
+import com.rajat.moodle.universal_fragment;
+
+import android.support.v4.view.GravityCompat;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -39,28 +50,61 @@ public class JSONParser {
             {
 
                 status = resultJson.getBoolean("success");
+                UsersObject userobj;
+                if(resultJson.has("user")) {
+                    user = resultJson.getJSONObject("user");
+                    if (status) {
 
-                user= resultJson.getJSONObject("user");
-                if(status)
-                {
-                    if(user.has("last_name")){last_name=user.getString("last_name");}
-                    if(user.has("reset_password_key")){reset_password_key=user.getString("reset_password_key");}
-                    if(user.has("registration_key")){registration_key=user.getString("registration_key");}
-                    if(user.has("first_name")){first_name=user.getString("first_name");}
-                    if(user.has("entry_no")){entry_no=user.getString("entry_no");}
-                    if(user.has("email")){email=user.getString("email");}
-                    if(user.has("username")){username=user.getString("username");}
-                    if(user.has("registration_id")){registration_id=user.getString("registration_id");}
-                    if(user.has("password")){password=user.getString("password");}
-                    if(user.has("id")){id=user.getInt("id");}
-                    if(user.has("type_")){type_=user.getInt("type_");}
-                    Tools.showAlertDialog(last_name + " "+id+" "+reset_password_key+" "
-                            +registration_key+" "+first_name+" "+entry_no+" "+username+" "
-                            +registration_id+" "+password+" "+type_+" "+email,con);
-                }
-                else
-                {
-
+                        if (user.has("last_name")) {
+                            last_name = user.getString("last_name");
+                        }
+                        if (user.has("reset_password_key")) {
+                            reset_password_key = user.getString("reset_password_key");
+                        }
+                        if (user.has("registration_key")) {
+                            registration_key = user.getString("registration_key");
+                        }
+                        if (user.has("first_name")) {
+                            first_name = user.getString("first_name");
+                        }
+                        if (user.has("entry_no")) {
+                            entry_no = user.getString("entry_no");
+                        }
+                        if (user.has("email")) {
+                            email = user.getString("email");
+                        }
+                        if (user.has("username")) {
+                            username = user.getString("username");
+                        }
+                        if (user.has("registration_id")) {
+                            registration_id = user.getString("registration_id");
+                        }
+                        if (user.has("password")) {
+                            password = user.getString("password");
+                        }
+                        if (user.has("id")) {
+                            id = user.getInt("id");
+                        }
+                        if (user.has("type_")) {
+                            type_ = user.getInt("type_");
+                        }
+                       /* Tools.showAlertDialog(last_name + " " + id + " " + reset_password_key + " "
+                                + registration_key + " " + first_name + " " + entry_no + " " + username + " "
+                                + registration_id + " " + password + " " + type_ + " " + email, con);*/
+                        userobj = new UsersObject(last_name, reset_password_key, registration_key, first_name, entry_no, email, username, registration_id, password, id, type_);
+                        Log.i("rajat",status+" "+userobj.getEntry_no());
+                        Intent openH = new Intent(con, After_login.class);
+                        //openH.putExtra("userObj",  userobj);
+                       // Bundle b=new Bundle();
+                       // b.putParcelable("userobj",userobj);
+                        //openH.putExtra("b",userobj);
+                        openH.putExtra("userName",username);
+                        openH.putExtra("email",email);
+                        openH.putExtra("entry_no",entry_no);
+                        con.startActivity(openH);
+                    } else {
+                        Toast.makeText(con, "username or password incorrect", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         }
@@ -220,7 +264,9 @@ public class JSONParser {
             if (resultJson.has("courses"))
             {
                 courses = resultJson.getJSONArray("courses");
-                CourseObject[] courseObjects= new CourseObject[courses.length()];
+                ArrayList<CourseObject> courseObjects= new ArrayList<CourseObject>();
+
+
                 for(int i=0;i<courses.length();i++){
                     courseObj=courses.getJSONObject(i);
                     if(courseObj.has("id")){id_course=courseObj.getInt("id");}
@@ -230,11 +276,20 @@ public class JSONParser {
                     if(courseObj.has("description")){description_course=courseObj.getString("description");}
                     if(courseObj.has("l_t_p")){l_t_p=courseObj.getString("l_t_p");}
                     //after each value is initialized
-                    courseObjects[i]=new CourseObject(code,name_course,description_course,l_t_p,credits,id_course);
+                    courseObjects.add(new CourseObject(code,name_course,description_course,l_t_p,credits,id_course));
                 }
+                Bundle bundle=new Bundle();
+                bundle.putBoolean("grade",true);
+                bundle.putParcelableArrayList("courses",courseObjects);
+                universal_fragment fragment = new universal_fragment();
+                fragment.setArguments(bundle);
+                android.support.v4.app.FragmentTransaction fragmentTransaction =
+                        ((FragmentActivity)con).getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame_container,fragment);
+                fragmentTransaction.commit();
                 // do something with NotificationObjectArray
                 //Tools.showAlertDialog(submissionObjects.length+" : length",con);
-                Tools.showAlertDialog(" len: "+ courseObjects.length,con);
+                Tools.showAlertDialog(" len: "+ courseObjects.size(),con);
             }
 
         }
@@ -440,6 +495,16 @@ public class JSONParser {
 
                 //Tools.showAlertDialog(" Grade len: "+ gradeObjects.length,con);
                 gradeObjList=new ArrayList<GradeObject>(Arrays.asList(gradeObjects));
+                Bundle bundle=new Bundle();
+                bundle.putParcelableArrayList("grade",gradeObjList);
+                grade_fragment fragment = new grade_fragment();
+                fragment.setArguments(bundle);
+
+                android.support.v4.app.FragmentTransaction fragmentTransaction =
+                        ((FragmentActivity)con).getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame_container,fragment);
+                fragmentTransaction.commit();
+
                 // do something with NotificationObjectArray
                 //Tools.showAlertDialog(submissionObjects.length+" : length",con);
                 Log.i("rajat"," Grade len: "+ gradeObjects.length);

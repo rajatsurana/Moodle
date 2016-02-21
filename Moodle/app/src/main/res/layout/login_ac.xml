@@ -10,7 +10,7 @@
         android:inputType="textPersonName"
         android:text="Name"
         android:ems="10"
-        android:id="@+id/editText"
+        android:id="@+id/username"
         android:layout_marginBottom="235dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
@@ -18,13 +18,13 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editText2"
+        android:id="@+id/password"
         android:layout_marginTop="58dp"
-        android:layout_alignTop="@+id/editText"
-        android:layout_alignRight="@+id/editText"
-        android:layout_alignEnd="@+id/editText"
-        android:layout_alignLeft="@+id/editText"
-        android:layout_alignStart="@+id/editText" />
+        android:layout_alignTop="@+id/username"
+        android:layout_alignRight="@+id/username"
+        android:layout_alignEnd="@+id/username"
+        android:layout_alignLeft="@+id/username"
+        android:layout_alignStart="@+id/username" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:text="Login"
         android:id="@+id/button_login"
-        android:layout_below="@+id/editText2"
+        android:layout_below="@+id/password"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="27dp" />
 
@@ -43,6 +43,6 @@
         android:id="@+id/checkBox_remember"
         android:checked="false"
         android:layout_below="@+id/button_login"
-        android:layout_alignLeft="@+id/editText2"
-        android:layout_alignStart="@+id/editText2" />
+        android:layout_alignLeft="@+id/password"
+        android:layout_alignStart="@+id/password" />
 </RelativeLayout>

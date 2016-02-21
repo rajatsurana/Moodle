@@ -11,6 +11,8 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.rajat.moodle.Tools.customadapter_mycourse_fragment;
 import com.rajat.moodle.Objects.CourseObject;
 
@@ -22,16 +24,17 @@ import java.util.ArrayList;
  * Activities that contain this fragment must implement the
  * {@link mycourses_fragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link mycourses_fragment#newInstance} factory method to
+ * Use the {@link mycourses_fragment#//newInstance} factory method to
  * create an instance of this fragment.
  */
 public class mycourses_fragment extends Fragment implements AbsListView.OnItemClickListener{
     private OnFragmentInteractionListener mListener;
+
     ArrayList<CourseObject> values=new ArrayList<CourseObject>();
     CourseObject a;
     public void arpit() {
         for (int i = 0; i < 4; i++) {
-            a=new CourseObject("cop290","deign practices","computer science","3-0-2",3,1);
+            a=new CourseObject("cop290"+i,"deign practices"+i,"computer science"+i,"3-0-2"+i,3,1);
             values.add(a);
         }
     }
@@ -100,7 +103,12 @@ public class mycourses_fragment extends Fragment implements AbsListView.OnItemCl
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        //if(id==android.R.id.list){
+            Toast.makeText(getActivity()," "+values.get(position).name_course,Toast.LENGTH_SHORT).show();
+        //}
+
         if (null != mListener) {
+
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
           //  mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);

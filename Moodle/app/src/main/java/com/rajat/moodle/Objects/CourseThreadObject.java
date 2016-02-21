@@ -1,9 +1,11 @@
 package com.rajat.moodle.Objects;
 
+import java.io.Serializable;
+
 /**
  * Created by Rajat on 19-02-2016.
  */
-public class CourseThreadObject {
+public class CourseThreadObject implements Serializable {
     String description,title,created_at,updated_at;
     int user_id,registration_course_id,id;
 

@@ -30,7 +30,7 @@ import java.util.ArrayList;
  */
 public class grade_fragment extends Fragment implements AbsListView.OnItemClickListener{
     private OnFragmentInteractionListener mListener;
-    ArrayList<GradeObject> values=new ArrayList<GradeObject>();
+    ArrayList<GradeObject> values;
     GradeObject a;
     public void arpit() {
         for (int i = 0; i < 4; i++) {
@@ -62,18 +62,22 @@ public class grade_fragment extends Fragment implements AbsListView.OnItemClickL
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        arpit();
+     //   arpit();
         // TODO: Change Adapter to display your content
-        mAdapter = new customadapter_grades(getActivity(),
-                R.layout.grade_format_layout,values);
+       // mAdapter = new customadapter_grades(getActivity(),
+         //       R.layout.grade_format_layout,values);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle bundle=getArguments();
         View view = inflater.inflate(R.layout.fragment_grade_fragment, container, false);
 
         // Set the adapter
+        values=bundle.getParcelableArrayList("grade");
+        mAdapter = new customadapter_grades(getActivity(),
+                R.layout.grade_format_layout,values);
         mListView = (AbsListView) view.findViewById(android.R.id.list);
         mListView.setAdapter(mAdapter);
 

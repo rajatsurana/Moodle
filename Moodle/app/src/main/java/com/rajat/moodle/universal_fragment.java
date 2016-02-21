@@ -1,6 +1,7 @@
 package com.rajat.moodle;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,8 +12,11 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+
+import com.rajat.moodle.Objects.CourseThreadObject;
 import com.rajat.moodle.Tools.customadapter_universal;
 import com.rajat.moodle.Objects.CourseObject;
+import com.rajat.moodle.Volley.VolleyClick;
 
 import java.util.ArrayList;
 
@@ -26,6 +30,7 @@ import java.util.ArrayList;
  * create an instance of this fragment.
  */
 public class universal_fragment extends Fragment implements AbsListView.OnItemClickListener{
+    Bundle bundle;
     private OnFragmentInteractionListener mListener;
     ArrayList<CourseObject> values=new ArrayList<CourseObject>();
     CourseObject a;
@@ -68,11 +73,13 @@ public class universal_fragment extends Fragment implements AbsListView.OnItemCl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        bundle=getArguments();
+        values=bundle.getParcelableArrayList("courses");
         View view = inflater.inflate(R.layout.fragment_universal_fragment, container, false);
 
         // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
-        arpit();
+
         mAdapter = new customadapter_universal(getActivity(),
                 R.layout.universal_layout,values);
         ((AdapterView<ListAdapter>)mListView).setAdapter(mAdapter);
@@ -102,6 +109,24 @@ public class universal_fragment extends Fragment implements AbsListView.OnItemCl
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Bundle bundle = getArguments();
+        boolean grade=bundle.getBoolean("grade");
+        if(grade==true){
+            VolleyClick.viewCourseGrades(values.get(position).code,getActivity());
+
+           /* Bundle bundle=new Bundle();
+            //bundle.put
+                    CourseThreadObject[] sd = new CourseThreadObject[2];
+            Intent i = new Intent();
+            i.putExtra("fds",sd);
+            Bundle a=new Bundle();
+            a.putSerializable("fds",sd);
+            //Intent s=getActivity().getIntent();
+            Bundle b=getArguments(); //s.getExtras();
+            //b.getExtras();
+            CourseThreadObject[] asas=(CourseThreadObject[])b.getSerializable("fds");*/
+        }
+        else{}
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.

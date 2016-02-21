@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,16 +14,38 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.rajat.moodle.Objects.UsersObject;
+import com.rajat.moodle.Volley.VolleyClick;
 
 public class After_login extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    Intent i;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        i=getIntent();
+        if(i!=null){
+            Log.i("rajat",i.getStringExtra("entry_no")+" "+i.getStringExtra("email"));
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "yahan prob hai", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     boolean logout_press = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_after_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -98,12 +121,7 @@ public class After_login extends AppCompatActivity
             fragmentTransaction.commit();
 
         } else if(id==R.id.nav_grades){
-            universal_fragment fragment = new universal_fragment();
-
-            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame_container,fragment);
-            fragmentTransaction.commit();
+            VolleyClick.listAllCourses(After_login.this);
         }else if (id == R.id.nav_logout) {
             logout_press = true;
             Intent openH = new Intent (this, Login.class);

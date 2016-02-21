@@ -10,7 +10,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.rajat.moodle.MainActivity;
+import com.rajat.moodle.Login;
 import com.rajat.moodle.Tools.Tools;
 
 import java.util.HashMap;
@@ -63,9 +63,9 @@ public class CallVolley {
                                 protected Response<String> parseNetworkResponse(NetworkResponse networkResponse) {
                                         String sessionId = networkResponse.headers.get("Set-Cookie");
                                         //sessionID=sessionId;
-                                        MainActivity.editor = MainActivity.sharedpreferences.edit();
-                                        MainActivity.editor.putString("Set-Cookie",sessionId);
-                                        MainActivity.editor.apply();
+                                        Login.editor = Login.sharedpreferences.edit();
+                                        Login.editor.putString("Set-Cookie",sessionId);
+                                        Login.editor.apply();
                                         return super.parseNetworkResponse(networkResponse);
                                 }
                         };
@@ -92,9 +92,9 @@ public class CallVolley {
                                 {
                                         Log.i("rajat", " onResponseActive " + response);
                                         //LoginApiJsonParser(response, context);
-                                        MainActivity.editor = MainActivity.sharedpreferences.edit();
-                                        MainActivity.editor.putString("Set-Cookie","");
-                                        MainActivity.editor.apply();
+                                        Login.editor = Login.sharedpreferences.edit();
+                                        Login.editor.putString("Set-Cookie","");
+                                        Login.editor.apply();
                                         pDialog.dismiss();
                                 }
                                 catch (Exception localException)
@@ -196,7 +196,7 @@ public class CallVolley {
                         public Map<String, String> getHeaders() throws AuthFailureError {
                                 //Log.i("size in getHeader: ",myHeaders.size()+"");
                                 Map<String, String> mHeaders=new HashMap<String,String>();//myHeaders;
-                                mHeaders.put("Cookie", MainActivity.sharedpreferences.getString("Set-Cookie", ""));//MainActivity.sharedpreferences.getString("Set-Cookie",""));
+                                mHeaders.put("Cookie", Login.sharedpreferences.getString("Set-Cookie", ""));//MainActivity.sharedpreferences.getString("Set-Cookie",""));
                                 return mHeaders;
                         }
 
