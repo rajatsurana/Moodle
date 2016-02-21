@@ -3,28 +3,24 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_notification"
-            android:icon="@drawable/bell32"
-            android:title="Notification" />
-        <item
             android:id="@+id/nav_courses"
             android:icon="@drawable/book"
             android:title="My Courses"
             />
+        <item
+            android:id="@+id/nav_notification"
+            android:icon="@drawable/bell32"
+            android:title="Notification" />
+        <item
+            android:id="@+id/nav_grades"
+            android:icon="@drawable/bell32"
+            android:title="Grades" />
 
     </group>
 
     <item android:title="Account Settings">
         <menu>
             <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/nav_profile"
-                    android:icon="@drawable/prof"
-                    android:title="Profile" />
-                <item
-                    android:id="@+id/nav_password"
-                    android:icon="@drawable/pass"
-                    android:title="Password" />
                 <item
                     android:id="@+id/nav_logout"
                     android:icon="@drawable/log"

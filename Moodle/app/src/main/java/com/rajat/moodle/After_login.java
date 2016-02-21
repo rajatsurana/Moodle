@@ -82,14 +82,29 @@ public class After_login extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_notification) {
-            // Handle the camera action
+            universal_fragment fragment = new universal_fragment();
+
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame_container,fragment);
+            fragmentTransaction.commit();
+
         } else if (id == R.id.nav_courses) {
+            mycourses_fragment fragment = new mycourses_fragment();
 
-        } else if (id == R.id.nav_profile) {
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame_container,fragment);
+            fragmentTransaction.commit();
 
-        } else if (id == R.id.nav_password) {
+        } else if(id==R.id.nav_grades){
+            universal_fragment fragment = new universal_fragment();
 
-        } else if (id == R.id.nav_logout) {
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame_container,fragment);
+            fragmentTransaction.commit();
+        }else if (id == R.id.nav_logout) {
             logout_press = true;
             Intent openH = new Intent (this, Login.class);
             startActivityForResult(openH,0);

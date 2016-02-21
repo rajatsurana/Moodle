@@ -5,9 +5,9 @@ package com.rajat.moodle.Objects;
  */
 public class GradeObject {
 
-    int weightage=0,user_id=0,out_of=0,registered_course_id=0,id=0;
-    double score=0;
-    String name="";
+    public int weightage=0,user_id=0,out_of=0,registered_course_id=0,id=0;
+    public double score=0;
+    public String name="";
     public GradeObject(int weightage,int user_id,int out_of,int registered_course_id,double score,int id, String name){
         this.id=id;
         this.name=name;

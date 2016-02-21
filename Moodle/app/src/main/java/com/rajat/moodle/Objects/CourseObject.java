@@ -4,7 +4,7 @@ package com.rajat.moodle.Objects;
  * Created by Rajat on 17-02-2016.
  */
 public class CourseObject {
-    String code="",name_course="",description_course="",l_t_p="";
+    public String code="",name_course="",description_course="",l_t_p="";
     int credits=0,id_course=0;
     public CourseObject(String code,String name_course,String description_course,String l_t_p,
             int credits,int id_course){

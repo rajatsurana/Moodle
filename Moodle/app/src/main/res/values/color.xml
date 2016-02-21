@@ -2,21 +2,10 @@
 <resources>
 
 
-
-    <color name="whitecolor">#ffffff </color>
-
-
-
-    <color name="white">#000000</color>
-
-    <color name="ultraLightGray_UltraLowlight">#dadada</color>
-    <color name="ultraLightGray">#B3B3B3</color>
-
-    <color name="lightRed">#FA9191</color>
-    <color name="lightRed_Pressed">#dc8080</color>
-
-
-    <color name="ultraLightGray_Lowlight">#c1c1c1</color>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#ffffff</color>
+    <color name="whitecolor">#FF4081 </color>
 
 
 </resources>
