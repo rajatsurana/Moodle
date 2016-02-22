@@ -31,13 +31,7 @@ import java.util.ArrayList;
 public class grade_fragment extends Fragment implements AbsListView.OnItemClickListener{
     private OnFragmentInteractionListener mListener;
     ArrayList<GradeObject> values;
-    GradeObject a;
-    public void arpit() {
-        for (int i = 0; i < 4; i++) {
-            a=new GradeObject(1,2,20,5,15,8,"design practices");
-            values.add(a);
-        }
-    }
+
 
 
     /**

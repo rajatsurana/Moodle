@@ -22,6 +22,7 @@ import com.rajat.moodle.Volley.VolleyClick;
 public class After_login extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Intent i;
+    public static boolean courselist;
 
     @Override
     protected void onStart() {
@@ -34,6 +35,8 @@ public class After_login extends AppCompatActivity
             Toast.makeText(getApplicationContext(), "yahan prob hai", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 
     boolean logout_press = false;
     @Override
@@ -64,6 +67,9 @@ public class After_login extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+
     }
 
     @Override
@@ -80,6 +86,8 @@ public class After_login extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.after_login, menu);
+        courselist = true;
+        VolleyClick.listAllCourses(After_login.this);
         return true;
     }
 
@@ -113,12 +121,8 @@ public class After_login extends AppCompatActivity
             fragmentTransaction.commit();
 
         } else if (id == R.id.nav_courses) {
-            mycourses_fragment fragment = new mycourses_fragment();
-
-            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame_container,fragment);
-            fragmentTransaction.commit();
+            courselist = true;
+            VolleyClick.listAllCourses(After_login.this);
 
         } else if(id==R.id.nav_grades){
             VolleyClick.listAllCourses(After_login.this);

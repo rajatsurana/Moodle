@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.rajat.moodle.details_fragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/detail"
+        android:paddingTop="52dp"
+        android:paddingLeft="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22dp"
+         />
+
+    <TextView
+        android:id="@+id/grade"
+        android:paddingLeft="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Grades"
+        android:textSize="28dp"
+        android:layout_below="@+id/assign"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="@dimen/abc_action_bar_overflow_padding_start_material"
+        android:layout_alignParentStart="true"
+        />
+    <TextView
+        android:id="@+id/threads"
+        android:paddingLeft="3dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Threads"
+        android:textSize="28dp"
+        android:layout_below="@+id/grade"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="@dimen/abc_action_bar_overflow_padding_start_material" />
+
+    <TextView
+        android:id="@+id/assign"
+        android:layout_width="match_parent"
+        android:paddingLeft="3dp"
+        android:layout_height="wrap_content"
+        android:text="Assignments"
+        android:layout_below="@+id/detail"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="@dimen/abc_action_bar_overflow_padding_start_material"
+        android:textSize="28dp"/>
+
+</RelativeLayout>

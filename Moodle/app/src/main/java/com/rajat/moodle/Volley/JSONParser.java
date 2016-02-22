@@ -17,7 +17,9 @@ import com.rajat.moodle.Objects.SubmissionObject;
 import com.rajat.moodle.Objects.UsersObject;
 import com.rajat.moodle.R;
 import com.rajat.moodle.Tools.Tools;
+import com.rajat.moodle.assignment_fragment;
 import com.rajat.moodle.grade_fragment;
+import com.rajat.moodle.mycourses_fragment;
 import com.rajat.moodle.universal_fragment;
 
 import android.support.v4.view.GravityCompat;
@@ -278,7 +280,22 @@ public class JSONParser {
                     //after each value is initialized
                     courseObjects.add(new CourseObject(code,name_course,description_course,l_t_p,credits,id_course));
                 }
-                Bundle bundle=new Bundle();
+
+                if(After_login.courselist){
+                    Bundle bundle=new Bundle();
+                    bundle.putParcelableArrayList("courses",courseObjects);
+                    mycourses_fragment fragment = new mycourses_fragment();
+                    After_login.courselist=false;
+                    fragment.setArguments(bundle);
+                    android.support.v4.app.FragmentTransaction fragmentTransaction =
+                            ((FragmentActivity)con).getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.frame_container,fragment);
+                    fragmentTransaction.commit();
+                  //  After_login.courselist=false;
+
+                }
+                else{
+                    Bundle bundle=new Bundle();
                 bundle.putBoolean("grade",true);
                 bundle.putParcelableArrayList("courses",courseObjects);
                 universal_fragment fragment = new universal_fragment();
@@ -286,7 +303,7 @@ public class JSONParser {
                 android.support.v4.app.FragmentTransaction fragmentTransaction =
                         ((FragmentActivity)con).getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frame_container,fragment);
-                fragmentTransaction.commit();
+                fragmentTransaction.commit();}
                 // do something with NotificationObjectArray
                 //Tools.showAlertDialog(submissionObjects.length+" : length",con);
                 Tools.showAlertDialog(" len: "+ courseObjects.size(),con);
@@ -440,6 +457,14 @@ public class JSONParser {
             }
             AssignmentObject[] assignmentObjectsFinal= new AssignmentObject[assignmentObjList.size()];
             assignmentObjectsFinal = assignmentObjList.toArray(assignmentObjectsFinal);
+            Bundle b=new Bundle();
+            b.putParcelableArrayList("assignments",assignmentObjList);
+            assignment_fragment fragment=new assignment_fragment();
+            fragment.setArguments(b);
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    ((FragmentActivity)con).getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame_container,fragment);
+            fragmentTransaction.commit();
         }
         catch (Exception e)
         {

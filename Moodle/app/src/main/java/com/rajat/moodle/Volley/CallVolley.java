@@ -27,7 +27,7 @@ public class CallVolley {
         // method that will send request  to server and get a response back
         public static void makeLoginCall(String url, final Context context)
         {
-                pDialog=  Tools.showProgressBar(context);
+              //  pDialog=  Tools.showProgressBar(context);
 
                         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>()
                         {

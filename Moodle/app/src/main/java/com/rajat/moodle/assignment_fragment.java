@@ -4,18 +4,17 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.rajat.moodle.Tools.customadapter_mycourse_fragment;
-import com.rajat.moodle.Objects.CourseObject;
+import com.rajat.moodle.Objects.AssignmentObject;
+import com.rajat.moodle.Objects.GradeObject;
+import com.rajat.moodle.Tools.customadapter_assignment;
+import com.rajat.moodle.Tools.customadapter_grades;
 
 import java.util.ArrayList;
 
@@ -23,16 +22,14 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link mycourses_fragment.OnFragmentInteractionListener} interface
+ * {@link assignment_fragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link mycourses_fragment#//newInstance} factory method to
+ * Use the {@link assignment_fragment#//newInstance} factory method to
  * create an instance of this fragment.
  */
-public class mycourses_fragment extends Fragment implements AbsListView.OnItemClickListener{
+public class assignment_fragment extends Fragment implements AbsListView.OnItemClickListener{
     private OnFragmentInteractionListener mListener;
-    Bundle bundle;
-    ArrayList<CourseObject> values=new ArrayList<CourseObject>();
-
+    ArrayList<AssignmentObject> values;
 
 
     /**
@@ -44,37 +41,38 @@ public class mycourses_fragment extends Fragment implements AbsListView.OnItemCl
      * The Adapter which will be used to populate the ListView/GridView with
      * Views.
      */
-    private customadapter_mycourse_fragment mAdapter;
+    private customadapter_assignment mAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public mycourses_fragment() {
-
+    public assignment_fragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
+        //
         // TODO: Change Adapter to display your content
-
+        // mAdapter = new customadapter_grades(getActivity(),
+        //       R.layout.grade_format_layout,values);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        bundle=getArguments();
-        values=bundle.getParcelableArrayList("courses");
-        View view = inflater.inflate(R.layout.layout_mycourses_fragment, container, false);
+        Bundle bundle = getArguments();
+        values = bundle.getParcelableArrayList("assignments");
+        View view = inflater.inflate(R.layout.fragment_grade_fragment, container, false);
 
         // Set the adapter
-        mAdapter = new customadapter_mycourse_fragment(getActivity(),
-                R.layout.course_format_layout,values);
+      //  values = bundle.getParcelableArrayList("grade");
+        mAdapter = new customadapter_assignment(getActivity(),
+                R.layout.assignment_format_layout, values);
         mListView = (AbsListView) view.findViewById(android.R.id.list);
-        ((AdapterView<ListAdapter>) mListView).setAdapter(mAdapter);
+        mListView.setAdapter(mAdapter);
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
@@ -101,25 +99,10 @@ public class mycourses_fragment extends Fragment implements AbsListView.OnItemCl
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Bundle b=new Bundle();
-        b.putString("course_code",values.get(position).code);
-        b.putString("course_description",values.get(position).description_course);
-        details_fragment fragment = new details_fragment();
-        fragment.setArguments(b);
-
-        android.support.v4.app.FragmentTransaction fragmentTransaction =
-                ((FragmentActivity)getContext()).getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frame_container,fragment);
-        fragmentTransaction.commit();
-        //if(id==android.R.id.list){
-       //     Toast.makeText(getActivity()," "+values.get(position).name_course,Toast.LENGTH_SHORT).show();
-        //}
-
         if (null != mListener) {
-
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-          //  mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+            //  mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
         }
     }
 
@@ -150,6 +133,4 @@ public class mycourses_fragment extends Fragment implements AbsListView.OnItemCl
         // TODO: Update argument type and name
         public void onFragmentInteraction(String id);
     }
-
 }
-
