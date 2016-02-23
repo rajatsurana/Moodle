@@ -8,7 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:hint="Name"
         android:ems="10"
         android:id="@+id/username"
         android:layout_marginBottom="235dp"
@@ -19,6 +19,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/password"
+        android:hint="Password"
+        android:password="true"
         android:layout_marginTop="58dp"
         android:layout_alignTop="@+id/username"
         android:layout_alignRight="@+id/username"
@@ -34,7 +36,12 @@
         android:id="@+id/button_login"
         android:layout_below="@+id/password"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="27dp" />
+        android:layout_marginTop="27dp"
+        android:background="@drawable/buttonshapelog"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"/>
 
     <CheckBox
         android:layout_width="wrap_content"
@@ -43,6 +50,18 @@
         android:id="@+id/checkBox_remember"
         android:checked="false"
         android:layout_below="@+id/button_login"
+        android:layout_marginTop="10dp"
         android:layout_alignLeft="@+id/password"
         android:layout_alignStart="@+id/password" />
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Remember me"
+        android:id="@+id/checkBox_prof"
+        android:checked="false"
+        android:layout_below="@+id/checkBox_remember"
+        android:layout_marginTop="10dp"
+        android:layout_alignLeft="@+id/password"
+        android:layout_alignStart="@+id/password" />
+
 </RelativeLayout>

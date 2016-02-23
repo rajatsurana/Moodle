@@ -3,20 +3,19 @@ package com.rajat.moodle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.util.Log;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
-import com.rajat.moodle.Objects.UsersObject;
 import com.rajat.moodle.Volley.VolleyClick;
 
 public class After_login extends AppCompatActivity
@@ -113,6 +112,7 @@ public class After_login extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_notification) {
+            getSupportActionBar().setTitle("Notification");
             universal_fragment fragment = new universal_fragment();
 
             android.support.v4.app.FragmentTransaction fragmentTransaction =
@@ -121,15 +121,33 @@ public class After_login extends AppCompatActivity
             fragmentTransaction.commit();
 
         } else if (id == R.id.nav_courses) {
+            getSupportActionBar().setTitle("Courses");
             courselist = true;
             VolleyClick.listAllCourses(After_login.this);
 
         } else if(id==R.id.nav_grades){
+            getSupportActionBar().setTitle("Grades");
             VolleyClick.listAllCourses(After_login.this);
         }else if (id == R.id.nav_logout) {
             logout_press = true;
             Intent openH = new Intent (this, Login.class);
             startActivityForResult(openH,0);
+        }else if (id == R.id.nav_profile){
+            getSupportActionBar().setTitle("Profile");
+            profile_fragment fragment = new profile_fragment();
+
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame_container,fragment);
+            fragmentTransaction.commit();
+        }else if (id == R.id.nav_password){
+            getSupportActionBar().setTitle("Change password");
+            password_fragment fragment = new password_fragment();
+
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame_container,fragment);
+            fragmentTransaction.commit();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
