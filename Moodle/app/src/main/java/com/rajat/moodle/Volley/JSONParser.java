@@ -20,6 +20,8 @@ import com.rajat.moodle.Tools.Tools;
 import com.rajat.moodle.assignment_fragment;
 import com.rajat.moodle.grade_fragment;
 import com.rajat.moodle.mycourses_fragment;
+import com.rajat.moodle.thread_description_fragment;
+import com.rajat.moodle.thread_fragment;
 import com.rajat.moodle.universal_fragment;
 
 import android.support.v4.view.GravityCompat;
@@ -434,6 +436,14 @@ public class JSONParser {
                     Tools.showAlertDialog(registered_course_id+ late_days_allowed+type_+id+ name+created_at+deadline+file_+" : length",con);
                 }
                 assignmentObjList=new ArrayList<AssignmentObject>(Arrays.asList(assignmentObjects));
+                Bundle b=new Bundle();
+                b.putParcelableArrayList("assignments",assignmentObjList);
+                assignment_fragment fragment=new assignment_fragment();
+                fragment.setArguments(b);
+                android.support.v4.app.FragmentTransaction fragmentTransaction =
+                        ((FragmentActivity)con).getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame_container,fragment);
+                fragmentTransaction.commit();
             }
             if (resultJson.has("registered")){
                 registered=resultJson.getJSONObject("registered");
@@ -457,14 +467,7 @@ public class JSONParser {
             }
             AssignmentObject[] assignmentObjectsFinal= new AssignmentObject[assignmentObjList.size()];
             assignmentObjectsFinal = assignmentObjList.toArray(assignmentObjectsFinal);
-            Bundle b=new Bundle();
-            b.putParcelableArrayList("assignments",assignmentObjList);
-            assignment_fragment fragment=new assignment_fragment();
-            fragment.setArguments(b);
-            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                    ((FragmentActivity)con).getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame_container,fragment);
-            fragmentTransaction.commit();
+
         }
         catch (Exception e)
         {
@@ -620,6 +623,14 @@ public class JSONParser {
 
                 //Tools.showAlertDialog(" Grade len: "+ gradeObjects.length,con);
                 courseThreadObjList=new ArrayList<CourseThreadObject>(Arrays.asList(courseThreadObjects));
+                Bundle b=new Bundle();
+                b.putParcelableArrayList("thread",courseThreadObjList);
+                thread_fragment fragment=new thread_fragment();
+                fragment.setArguments(b);
+                android.support.v4.app.FragmentTransaction fragmentTransaction =
+                        ((FragmentActivity)con).getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame_container,fragment);
+                fragmentTransaction.commit();
                 // do something with NotificationObjectArray
                 //Tools.showAlertDialog(submissionObjects.length+" : length",con);
                 Log.i("rajat"," courseThread len: "+ courseThreadObjects.length);
@@ -719,6 +730,7 @@ public class JSONParser {
                 }
                 userObjList=new ArrayList<UsersObject>(Arrays.asList(userObjects));
 
+
                 // do something with NotificationObjectArray
 
                 Tools.showAlertDialog(" User len: "+ userObjects.length,con);
@@ -739,6 +751,15 @@ public class JSONParser {
                     commentObjects[i]=new CommentsObject(user_id,thread_id,id_comment,description_comment,created_at_comment);
                 }
                 commentObjList=new ArrayList<CommentsObject>(Arrays.asList(commentObjects));
+                Bundle b=new Bundle();
+                b.putParcelableArrayList("comments",commentObjList);
+                b.putParcelable("thread_description",VolleyClick.object);
+                thread_description_fragment fragment=new thread_description_fragment();
+                fragment.setArguments(b);
+                android.support.v4.app.FragmentTransaction fragmentTransaction =
+                        ((FragmentActivity)con).getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame_container,fragment);
+                fragmentTransaction.commit();
 
                 // do something with NotificationObjectArray
 

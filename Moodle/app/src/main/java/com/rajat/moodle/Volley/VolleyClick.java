@@ -2,6 +2,8 @@ package com.rajat.moodle.Volley;
 
 import android.content.Context;
 
+import com.rajat.moodle.Objects.CommentsObject;
+import com.rajat.moodle.Objects.CourseThreadObject;
 import com.rajat.moodle.Tools.CheckNetwork;
 import com.rajat.moodle.Tools.Tools;
 
@@ -9,6 +11,7 @@ import com.rajat.moodle.Tools.Tools;
  * Created by Lenovo on 2/21/2016.
  */
 public class VolleyClick {
+    public static CourseThreadObject object;
     static int Notification=1,
             CourseAssignment=2,
             CourseList=3,
@@ -39,11 +42,12 @@ public class VolleyClick {
             Tools.showAlertDialog("Internet Available", context);
         }
     }
-    public static void viewParticularThread(int thread_id,Context context){
+    public static void viewParticularThread(int thread_id, CourseThreadObject obj,Context context){
         CheckNetwork chkNet = new CheckNetwork(context);
         String URL = "http://192.168.43.196/threads/thread.json/"+thread_id;
         if (!chkNet.checkNetwork()) {
             VolleySingleton.getInstance(context).getRequestQueue().getCache().clear();
+            object=obj;
             CallVolley.afterLoginCall(URL, context, viewParticularThread);
         } else {
             Tools.showAlertDialog("Internet Available", context);

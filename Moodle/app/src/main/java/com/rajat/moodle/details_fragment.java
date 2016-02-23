@@ -106,7 +106,10 @@ public class details_fragment extends Fragment {
                 String course_code=b.getString("course_code");
                 VolleyClick.viewCourseGrades(course_code,getActivity());
             }
-            if(id==R.id.threads){}
+            if(id==R.id.threads){
+                String course_code=b.getString("course_code");
+                VolleyClick.viewCourseThreads(course_code,getActivity());
+            }
         }
     };
     @Override

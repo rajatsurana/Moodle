@@ -21,15 +21,7 @@
     <item android:title="Account Settings">
         <menu>
             <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/nav_profile"
-                    android:icon="@drawable/prof"
-                    android:title="Profile" />
-                <item
-                    android:id="@+id/nav_password"
-                    android:icon="@drawable/pass"
-                    android:title="Password" />
-                <item
+               <item
                     android:id="@+id/nav_logout"
                     android:icon="@drawable/log"
                     android:title="Logout" />
