@@ -106,9 +106,9 @@ public class JSONParser {
                        // Bundle b=new Bundle();
                        // b.putParcelable("userobj",userobj);
                         //openH.putExtra("b",userobj);
-                        openH.putExtra("userName", username);
-                        openH.putExtra("email", email);
-                        openH.putExtra("entry_no", entry_no);
+                        openH.putExtra("userName", username.toString());
+                        openH.putExtra("email", email.toString());
+                        openH.putExtra("entry_no", entry_no.toString());
 
                         con.startActivity(openH);
                     } else {

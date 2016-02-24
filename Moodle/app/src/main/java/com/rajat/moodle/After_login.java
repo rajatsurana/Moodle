@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -27,6 +28,7 @@ public class After_login extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Intent i;
     public static boolean courselist;
+    Bundle b;
     public static Context context;
     @Override
     protected void onStart() {
@@ -81,13 +83,17 @@ public class After_login extends AppCompatActivity
 
         super.onCreate(savedInstanceState);
 
+
         setContentView(R.layout.activity_after_login);
+        String username=getIntent().getStringExtra("userName");
+        String emailid=getIntent().getStringExtra("email");
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         context =After_login.this;
         if(i!=null){
 
         }
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -98,16 +104,18 @@ public class After_login extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        TextView name_user = (TextView)findViewById(R.id.name_user);
-        TextView email_user = (TextView)findViewById(R.id.email_user);
+        View headerLayout = navigationView.getHeaderView(0);
+        TextView name_user = (TextView)headerLayout.findViewById(R.id.name_user);
+
+        if(name_user!=null)name_user.setText(username);
+        TextView email_user = (TextView)headerLayout.findViewById(R.id.email_user);
+        if(email_user!=null)email_user.setText(emailid);
+
         SharedPreferences sp = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         Log.i("rajat","sp: " +sp.getAll().size());
-        if(sp.contains("userName")&&sp.contains("email")){
-if(name_user!=null)
-            name_user.setText(sp.getString("userName", ""));
-            if(email_user!=null)
-            email_user.setText(sp.getString("email", ""));
-        }
+
+
+
 
 
     }
