@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.rajat.moodle.Objects.CommentsObject;
 import com.rajat.moodle.Objects.CourseThreadObject;
+import com.rajat.moodle.Objects.UsersObject;
 import com.rajat.moodle.Tools.customadapter_comments;
 import com.rajat.moodle.Volley.VolleyClick;
 //import com.rajat.moodle.Tools.customadapter_universal;
@@ -44,6 +45,7 @@ public class thread_description_fragment extends Fragment implements AbsListView
     Bundle bundle;
     private OnFragmentInteractionListener mListener;
     ArrayList<CommentsObject> values=new ArrayList<CommentsObject>();
+    ArrayList<UsersObject> user=new ArrayList<UsersObject>();
 
 
 
@@ -82,6 +84,8 @@ FloatingActionButton fab;
         bundle=getArguments();
         CourseThreadObject courseThreadObject=bundle.getParcelable("thread_description");
         values=bundle.getParcelableArrayList("comments");
+        user=bundle.getParcelableArrayList("user_ids");
+
         View view = inflater.inflate(R.layout.fragment_thread_description_fragment, container, false);
         fab=(FloatingActionButton)view.findViewById(R.id.fab);
         fab.setOnTouchListener(new View.OnTouchListener() {
@@ -102,7 +106,7 @@ FloatingActionButton fab;
         created_at.setText(courseThreadObject.created_at);
         updated_at.setText(courseThreadObject.updated_at);
         mAdapter = new customadapter_comments(getActivity(),
-                R.layout.comment_layout,values);
+                R.layout.comment_layout,values,user);
         ((AdapterView<ListAdapter>)mListView).setAdapter(mAdapter);
 
         // Set OnItemClickListener so we can be notified on item clicks

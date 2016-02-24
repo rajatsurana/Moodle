@@ -130,8 +130,8 @@ public class JSONParser {
 
 
             JSONObject notifyObj=new JSONObject();
-            String description="",created_at="";
-            int user_id =0,is_seen=0,id=0;
+            String description="",created_at="",user_id="";
+            int is_seen=0,id=0;
             ArrayList<NotificationObject> notificationObjList= new ArrayList<NotificationObject>();
             //create json object from response string
             JSONObject resultJson = new JSONObject(JsonStringResult);
@@ -142,7 +142,7 @@ public class JSONParser {
                 NotificationObject[] notificationObjects= new NotificationObject[notifications.length()];
                 for(int i=0;i<notifications.length();i++){
                     notifyObj=notifications.getJSONObject(i);
-                    if(notifyObj.has("user_id")){user_id=notifyObj.getInt("user_id");}
+                    if(notifyObj.has("user_id")){user_id=Integer.toString(notifyObj.getInt("user_id"));}
                     if(notifyObj.has("description")){description=notifyObj.getString("description");
                         description=android.text.Html.fromHtml(description).toString();}
                     if(notifyObj.has("is_seen")){is_seen=notifyObj.getInt("is_seen");}
@@ -183,8 +183,8 @@ public class JSONParser {
 
 
             JSONObject notifyObj=new JSONObject();
-            String description="",created_at="";
-            int user_id =0,is_seen=0,id=0;
+            String description="",created_at="",user_id="";
+            int is_seen=0,id=0;
             ArrayList<NotificationObject> notificationObjList= new ArrayList<NotificationObject>();
             //create json object from response string
             JSONObject resultJson = new JSONObject(JsonStringResult);
@@ -195,9 +195,9 @@ public class JSONParser {
                 NotificationObject[] notificationObjects= new NotificationObject[notifications.length()];
                 for(int i=0;i<notifications.length();i++){
                     notifyObj=notifications.getJSONObject(i);
-                    if(notifyObj.has("user_id")){user_id=notifyObj.getInt("user_id");}
                     if(notifyObj.has("description")){description=notifyObj.getString("description");
                         description=android.text.Html.fromHtml(description).toString();}
+                    if(notifyObj.has("user_id")){String[] words = description.split(" ");user_id=words[0]+" "+words[1];}
                     if(notifyObj.has("is_seen")){is_seen=notifyObj.getInt("is_seen");}
                     if(notifyObj.has("created_at")){created_at=notifyObj.getString("created_at");}
                     if(notifyObj.has("id")){id=notifyObj.getInt("id");}
@@ -700,8 +700,6 @@ public class JSONParser {
                     //after each value is initialized
                     courseThreadObjects[i]=new CourseThreadObject(description,title,created_at,updated_at,user_id_thread,registered_course_id_thread,id_thread);
                 }
-
-                //Tools.showAlertDialog(" Grade len: "+ gradeObjects.length,con);
                 courseThreadObjList=new ArrayList<CourseThreadObject>(Arrays.asList(courseThreadObjects));
                 Bundle b=new Bundle();
                 b.putParcelableArrayList("thread",courseThreadObjList);
@@ -711,11 +709,15 @@ public class JSONParser {
                         ((FragmentActivity)con).getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frame_container,fragment);
                 fragmentTransaction.commit();
+                //Tools.showAlertDialog(" Grade len: "+ gradeObjects.length,con);
+
                 // do something with NotificationObjectArray
                 //Tools.showAlertDialog(submissionObjects.length+" : length",con);
                 Log.i("rajat"," courseThread len: "+ courseThreadObjects.length);
                 Tools.showAlertDialog(" courseThread len: " + courseThreadObjects.length, con);
             }
+
+
 
             if (resultJson.has("registered")){
                 registered=resultJson.getJSONObject("registered");
@@ -832,20 +834,22 @@ public class JSONParser {
                     commentObjects[i]=new CommentsObject(user_id,thread_id,id_comment,description_comment,created_at_comment);
                 }
                 commentObjList=new ArrayList<CommentsObject>(Arrays.asList(commentObjects));
-                Bundle b=new Bundle();
-                b.putParcelableArrayList("comments",commentObjList);
-                b.putParcelable("thread_description",VolleyClick.object);
-                thread_description_fragment fragment=new thread_description_fragment();
-                fragment.setArguments(b);
-                android.support.v4.app.FragmentTransaction fragmentTransaction =
-                        ((FragmentActivity)con).getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame_container,fragment);
-                fragmentTransaction.commit();
+
 
                 // do something with NotificationObjectArray
 
                 Tools.showAlertDialog(" Comments len: "+ commentObjects.length,con);
             }
+            Bundle b=new Bundle();
+            b.putParcelableArrayList("user_ids",userObjList);
+            b.putParcelableArrayList("comments",commentObjList);
+            b.putParcelable("thread_description",VolleyClick.object);
+            thread_description_fragment fragment=new thread_description_fragment();
+            fragment.setArguments(b);
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    ((FragmentActivity)con).getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame_container,fragment);
+            fragmentTransaction.commit();
             if (resultJson.has("thread"))
             {
                 courseThreadObj=resultJson.getJSONObject("thread");

@@ -7,10 +7,10 @@ import android.os.Parcelable;
  * Created by Rajat on 17-02-2016.
  */
 public class NotificationObject implements Parcelable {
-    public String description="",created_at="";
-    public int user_id =0,is_seen=0,id=0;
+    public String description="",created_at="",user_id="";
+    public int is_seen=0,id=0;
     //user_id,description,is_seen,created_at,id
-    public NotificationObject(int user_id, String description, int is_seen, String created_at, int id){
+    public NotificationObject(String user_id, String description, int is_seen, String created_at, int id){
         this.created_at=created_at;
         this.description=description;
         this.id=id;
@@ -20,7 +20,7 @@ public class NotificationObject implements Parcelable {
 
     protected NotificationObject(Parcel in) {
         description = in.readString();
-        user_id = in.readInt();
+        is_seen = in.readInt();
     }
 
     @Override
@@ -31,11 +31,11 @@ public class NotificationObject implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(description);
-        dest.writeInt(user_id);
+        dest.writeInt(is_seen);
     }
 
     @SuppressWarnings("unused")
-    public static final Creator<NotificationObject> CREATOR = new Creator<NotificationObject>() {
+    public static final Parcelable.Creator<NotificationObject> CREATOR = new Parcelable.Creator<NotificationObject>() {
         @Override
         public NotificationObject createFromParcel(Parcel in) {
             return new NotificationObject(in);

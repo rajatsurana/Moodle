@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.rajat.moodle.Objects.CommentsObject;
+import com.rajat.moodle.Objects.UsersObject;
 import com.rajat.moodle.R;
 
 import java.util.ArrayList;
@@ -20,11 +21,13 @@ import java.util.ArrayList;
 
         private int layout;
         ArrayList<CommentsObject> data;
+    ArrayList<UsersObject> user_id;
 
-        public customadapter_comments(Context context, int resource, ArrayList<CommentsObject> data) {
+        public customadapter_comments(Context context, int resource, ArrayList<CommentsObject> data,ArrayList<UsersObject> user_id) {
             super(context, resource,data);
             layout = resource;
             this.data=data;
+            this.user_id=user_id;
         }
 
         @Override
@@ -41,7 +44,7 @@ import java.util.ArrayList;
             viewHolder.name = (TextView) convertView.findViewById(R.id.comment_name);
             viewHolder.description = (TextView) convertView.findViewById(R.id.comment_description);
             viewHolder.created_at = (TextView) convertView.findViewById(R.id.comment_created_at);
-            viewHolder.name.setText(Integer.toString(data.get(position).user_id));
+            viewHolder.name.setText(user_id.get(position).getFirst_name()+" "+user_id.get(position).getLast_name());
             viewHolder.description.setText("Description: "+data.get(position).description);
             viewHolder.created_at.setText("Created at: "+data.get(position).created_at);
 
