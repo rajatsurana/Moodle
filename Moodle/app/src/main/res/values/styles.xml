@@ -30,4 +30,9 @@
     <style name="reg.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="reg.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="splashscreen" parent="Theme.AppCompat.Light">
+        <item name="windowActionBar">false</item>
+        <item name="colorPrimaryDark">@color/splashstatus</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 </resources>

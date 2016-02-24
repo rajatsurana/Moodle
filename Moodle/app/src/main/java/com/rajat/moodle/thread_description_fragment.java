@@ -2,29 +2,40 @@ package com.rajat.moodle;
 
 //import android.content.Context;
 //import android.net.Uri;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.rajat.moodle.Objects.CommentsObject;
 import com.rajat.moodle.Objects.CourseThreadObject;
 import com.rajat.moodle.Tools.customadapter_comments;
+import com.rajat.moodle.Volley.VolleyClick;
 //import com.rajat.moodle.Tools.customadapter_universal;
 //import com.rajat.moodle.Volley.VolleyClick;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link thread_description_fragment.OnFragmentInteractionListener} interface
+ * {@link OnFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link thread_description_fragment#//newInstance} factory method to
  * create an instance of this fragment.
@@ -64,7 +75,7 @@ public class thread_description_fragment extends Fragment implements AbsListView
         // TODO: Change Adapter to display your content
 
     }
-
+FloatingActionButton fab;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -72,7 +83,14 @@ public class thread_description_fragment extends Fragment implements AbsListView
         CourseThreadObject courseThreadObject=bundle.getParcelable("thread_description");
         values=bundle.getParcelableArrayList("comments");
         View view = inflater.inflate(R.layout.fragment_thread_description_fragment, container, false);
-
+        fab=(FloatingActionButton)view.findViewById(R.id.fab);
+        fab.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                AddCommentDialog(view.getContext());
+                return false;
+            }
+        });
         // Set the adapter
         mListView = (AbsListView) view.findViewById(android.R.id.list);
         title=(TextView)view.findViewById(R.id.title_thread_1);
@@ -164,5 +182,75 @@ public class thread_description_fragment extends Fragment implements AbsListView
         // TODO: Update argument type and name
         public void onFragmentInteraction(String id);
     }
+    public void AddCommentDialog(final Context context)
+    {
+        LayoutInflater layoutInflater = LayoutInflater.from(context);
+        View promptView = layoutInflater.inflate(R.layout.new_comment_lay_dialog, null);
+        final AlertDialog.Builder alert = new AlertDialog.Builder(context);
 
+        alert.setTitle("Wanna Add Comment");
+        alert.setView(promptView);
+        // alert.setIcon(R.drawable.button_login_select);
+
+
+        final EditText input = (EditText) promptView
+                .findViewById(R.id.comment_description);
+        //final EditText input2 = (EditText) promptView.findViewById(R.id.comment_description);
+        input.requestFocus();
+        input.setHint("Title");
+       // input.setTextColor(context.getResources().getColor(R.color.splashstatus));
+        //input.requestFocus();
+        //input2.setHint("Description");
+        //input2.setTextColor(context.getResources().getColor(R.color.splashstatus));
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                String comment_desc = input.getText().toString();
+                //String comment_desc = input2.getText().toString();
+
+                if(!comment_desc.equals("")){
+
+                    VolleyClick.postNewComment(values.get(0).thread_id,comment_desc+"",getActivity());
+                }
+
+            }
+        });
+        final AlertDialog alert1 = alert.create();
+
+        input.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {// TODO Auto-generated method stub
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                // TODO Auto-generated method stub
+                if (editable.toString().length() == 0) {
+                    alert1.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
+                } else {
+                    alert1.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(true);
+                }
+            }
+        });  alert1.show();
+        alert1.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
+
+
+    }
 }
+
+/*
+FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+ */

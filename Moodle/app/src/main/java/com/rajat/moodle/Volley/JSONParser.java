@@ -1,12 +1,15 @@
 package com.rajat.moodle.Volley;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.rajat.moodle.After_login;
+import com.rajat.moodle.Login;
 import com.rajat.moodle.Objects.AssignmentObject;
 import com.rajat.moodle.Objects.CommentsObject;
 import com.rajat.moodle.Objects.CourseObject;
@@ -20,6 +23,7 @@ import com.rajat.moodle.Tools.Tools;
 import com.rajat.moodle.assignment_fragment;
 import com.rajat.moodle.grade_fragment;
 import com.rajat.moodle.mycourses_fragment;
+import com.rajat.moodle.notification_fragment;
 import com.rajat.moodle.thread_description_fragment;
 import com.rajat.moodle.thread_fragment;
 import com.rajat.moodle.universal_fragment;
@@ -92,7 +96,7 @@ public class JSONParser {
                         if (user.has("type_")) {
                             type_ = user.getInt("type_");
                         }
-                       /* Tools.showAlertDialog(last_name + " " + id + " " + reset_password_key + " "
+                       /* //Tools.showAlertDialog(last_name + " " + id + " " + reset_password_key + " "
                                 + registration_key + " " + first_name + " " + entry_no + " " + username + " "
                                 + registration_id + " " + password + " " + type_ + " " + email, con);*/
                         userobj = new UsersObject(last_name, reset_password_key, registration_key, first_name, entry_no, email, username, registration_id, password, id, type_);
@@ -102,9 +106,10 @@ public class JSONParser {
                        // Bundle b=new Bundle();
                        // b.putParcelable("userobj",userobj);
                         //openH.putExtra("b",userobj);
-                        openH.putExtra("userName",username);
-                        openH.putExtra("email",email);
-                        openH.putExtra("entry_no",entry_no);
+                        openH.putExtra("userName", username);
+                        openH.putExtra("email", email);
+                        openH.putExtra("entry_no", entry_no);
+
                         con.startActivity(openH);
                     } else {
                         Toast.makeText(con, "username or password incorrect", Toast.LENGTH_SHORT).show();
@@ -119,6 +124,7 @@ public class JSONParser {
     }
     public static void NotificationApiJsonParser(String JsonStringResult,Context con)
     {
+        //boolean service=is_service;
         try {
             JSONArray notifications=new JSONArray();
 
@@ -126,7 +132,7 @@ public class JSONParser {
             JSONObject notifyObj=new JSONObject();
             String description="",created_at="";
             int user_id =0,is_seen=0,id=0;
-
+            ArrayList<NotificationObject> notificationObjList= new ArrayList<NotificationObject>();
             //create json object from response string
             JSONObject resultJson = new JSONObject(JsonStringResult);
             if (resultJson.has("notifications"))
@@ -137,15 +143,88 @@ public class JSONParser {
                 for(int i=0;i<notifications.length();i++){
                     notifyObj=notifications.getJSONObject(i);
                     if(notifyObj.has("user_id")){user_id=notifyObj.getInt("user_id");}
-                    if(notifyObj.has("description")){description=notifyObj.getString("description");}
+                    if(notifyObj.has("description")){description=notifyObj.getString("description");
+                        description=android.text.Html.fromHtml(description).toString();}
                     if(notifyObj.has("is_seen")){is_seen=notifyObj.getInt("is_seen");}
                     if(notifyObj.has("created_at")){created_at=notifyObj.getString("created_at");}
                     if(notifyObj.has("id")){id=notifyObj.getInt("id");}
                     //after each value is initialized
                     notificationObjects[i]=new NotificationObject(user_id,description,is_seen,created_at,id);
+
                 }
+                notificationObjList=new ArrayList<NotificationObject>(Arrays.asList(notificationObjects));
+                ////Tools.showAlertDialog(""+description,con);
                 // do something with NotificationObjectArray
-                Tools.showAlertDialog(notificationObjects.length+" : length",con);
+                ////Tools.showAlertDialog(notificationObjects.length+" : length Notify",con);
+
+                Bundle b=new Bundle();
+                b.putParcelableArrayList("notifications", notificationObjList);
+                notification_fragment fragment=new notification_fragment();
+                fragment.setArguments(b);
+                android.support.v4.app.FragmentTransaction fragmentTransaction =
+                        ((FragmentActivity)con).getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frame_container,fragment);
+                fragmentTransaction.commit();
+
+            }
+        }
+        catch (Exception e)
+        {
+            Log.i("rajat", e.getLocalizedMessage());
+        }
+
+    }
+    static int noti_id=1;
+    public static void NotificationApiJsonParserService(String JsonStringResult,Context con)
+    {
+        //boolean service=is_service;
+        try {
+            JSONArray notifications=new JSONArray();
+
+
+            JSONObject notifyObj=new JSONObject();
+            String description="",created_at="";
+            int user_id =0,is_seen=0,id=0;
+            ArrayList<NotificationObject> notificationObjList= new ArrayList<NotificationObject>();
+            //create json object from response string
+            JSONObject resultJson = new JSONObject(JsonStringResult);
+            if (resultJson.has("notifications"))
+            {
+
+                notifications = resultJson.getJSONArray("notifications");
+                NotificationObject[] notificationObjects= new NotificationObject[notifications.length()];
+                for(int i=0;i<notifications.length();i++){
+                    notifyObj=notifications.getJSONObject(i);
+                    if(notifyObj.has("user_id")){user_id=notifyObj.getInt("user_id");}
+                    if(notifyObj.has("description")){description=notifyObj.getString("description");
+                        description=android.text.Html.fromHtml(description).toString();}
+                    if(notifyObj.has("is_seen")){is_seen=notifyObj.getInt("is_seen");}
+                    if(notifyObj.has("created_at")){created_at=notifyObj.getString("created_at");}
+                    if(notifyObj.has("id")){id=notifyObj.getInt("id");}
+                    //after each value is initialized
+                    notificationObjects[i]=new NotificationObject(user_id,description,is_seen,created_at,id);
+                    if (is_seen==0){
+                        NotificationCompat.Builder mBuilder =
+                                new NotificationCompat.Builder(con)
+                                        .setSmallIcon(R.drawable.pass)
+                                        .setContentTitle(notificationObjects[0].user_id+"")
+                                        .setContentText(notificationObjects[0].description);
+                        NotificationManager mNotifyMgr =
+                                (NotificationManager) con.getSystemService(Context.NOTIFICATION_SERVICE);
+
+                        if(noti_id<10){
+                            noti_id++;
+                            mNotifyMgr.notify(noti_id,mBuilder.build());
+                        }else{
+                            noti_id=1;
+                            mNotifyMgr.notify(noti_id,mBuilder.build());
+                        }
+                    }
+                }
+                notificationObjList=new ArrayList<NotificationObject>(Arrays.asList(notificationObjects));
+                ////Tools.showAlertDialog(""+description,con);
+                // do something with NotificationObjectArray
+                ////Tools.showAlertDialog(notificationObjects.length+" : length Notify",con);
 
             }
         }
@@ -188,7 +267,7 @@ public class JSONParser {
                 if(assignment.has("deadline")){deadline=assignment.getString("deadline");}
                 if(assignment.has("description")){description=assignment.getString("description");}
                 if(assignment.has("file_")){file_=assignment.get("file_");}
-                Tools.showAlertDialog(registered_course_id+ late_days_allowed+type_+id+ name+created_at+deadline+file_+" : length",con);
+                //Tools.showAlertDialog(registered_course_id+ late_days_allowed+type_+id+ name+created_at+deadline+file_+" : length",con);
             }
             if (resultJson.has("registered")){
                 registered=resultJson.getJSONObject("registered");
@@ -226,7 +305,7 @@ public class JSONParser {
                     submissionObjects[i]=new SubmissionObject(name_submission,created_at_submission,file_submission,event_id,user_id,id_submission);
                 }
                 // do something with NotificationObjectArray
-                //Tools.showAlertDialog(submissionObjects.length+" : length",con);
+                ////Tools.showAlertDialog(submissionObjects.length+" : length",con);
             }
         }
         catch (Exception e)
@@ -262,7 +341,7 @@ public class JSONParser {
                 if(user.has("entry_no")){entry_no=user.getString("entry_no");}
                 if(user.has("registration_id")){registration_id=user.getString("registration_id");}
                 //registration_id
-                Tools.showAlertDialog(type_+" "+id+" "+current_sem+" "+current_year,con);
+                //Tools.showAlertDialog(type_+" "+id+" "+current_sem+" "+current_year,con);
             }
 
             if (resultJson.has("courses"))
@@ -307,8 +386,8 @@ public class JSONParser {
                 fragmentTransaction.replace(R.id.frame_container,fragment);
                 fragmentTransaction.commit();}
                 // do something with NotificationObjectArray
-                //Tools.showAlertDialog(submissionObjects.length+" : length",con);
-                Tools.showAlertDialog(" len: "+ courseObjects.size(),con);
+                ////Tools.showAlertDialog(submissionObjects.length+" : length",con);
+                //Tools.showAlertDialog(" len: "+ courseObjects.size(),con);
             }
 
         }
@@ -352,8 +431,8 @@ public class JSONParser {
                 }
                 gradeObjList=new ArrayList<GradeObject>(Arrays.asList(gradeObjects));
                 // do something with NotificationObjectArray
-                //Tools.showAlertDialog(submissionObjects.length+" : length",con);
-                Tools.showAlertDialog(" Grade len: "+ gradeObjects.length,con);
+                ////Tools.showAlertDialog(submissionObjects.length+" : length",con);
+                //Tools.showAlertDialog(" Grade len: "+ gradeObjects.length,con);
             }
             if (resultJson.has("courses"))
             {
@@ -372,8 +451,8 @@ public class JSONParser {
                 }
                 courseObjList=new ArrayList<CourseObject>(Arrays.asList(courseObjects));
                 // do something with NotificationObjectArray
-                //Tools.showAlertDialog(submissionObjects.length+" : length",con);
-                Tools.showAlertDialog(" Course len: "+ courseObjects.length,con);
+                ////Tools.showAlertDialog(submissionObjects.length+" : length",con);
+                //Tools.showAlertDialog(" Course len: "+ courseObjects.length,con);
             }
             //use courseObjList and gradeObjList || courseObjectsFinal and gradeObjectsFinal
             CourseObject[] courseObjectsFinal= new CourseObject[courseObjList.size()];
@@ -430,20 +509,13 @@ public class JSONParser {
                     if(assignmentObj.has("name")){name=assignmentObj.getString("name");}
                     if(assignmentObj.has("created_at")){created_at=assignmentObj.getString("created_at");}
                     if(assignmentObj.has("deadline")){deadline=assignmentObj.getString("deadline");}
-                    if(assignmentObj.has("description")){description=assignmentObj.getString("description");}
+                    if(assignmentObj.has("description")){description=assignmentObj.getString("description");
+                        description=android.text.Html.fromHtml(description).toString();}
                     if(assignmentObj.has("file_")){file_=assignmentObj.get("file_");}
                     assignmentObjects[i]=new AssignmentObject(name,created_at,deadline,description,file_,registered_course_id,late_days_allowed,type_,id);
-                    Tools.showAlertDialog(registered_course_id+ late_days_allowed+type_+id+ name+created_at+deadline+file_+" : length",con);
+                    //Tools.showAlertDialog(registered_course_id+ late_days_allowed+type_+id+ name+created_at+deadline+file_+" : length",con);
                 }
                 assignmentObjList=new ArrayList<AssignmentObject>(Arrays.asList(assignmentObjects));
-                Bundle b=new Bundle();
-                b.putParcelableArrayList("assignments",assignmentObjList);
-                assignment_fragment fragment=new assignment_fragment();
-                fragment.setArguments(b);
-                android.support.v4.app.FragmentTransaction fragmentTransaction =
-                        ((FragmentActivity)con).getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frame_container,fragment);
-                fragmentTransaction.commit();
             }
             if (resultJson.has("registered")){
                 registered=resultJson.getJSONObject("registered");
@@ -467,7 +539,14 @@ public class JSONParser {
             }
             AssignmentObject[] assignmentObjectsFinal= new AssignmentObject[assignmentObjList.size()];
             assignmentObjectsFinal = assignmentObjList.toArray(assignmentObjectsFinal);
-
+            Bundle b=new Bundle();
+            b.putParcelableArrayList("assignments",assignmentObjList);
+            assignment_fragment fragment=new assignment_fragment();
+            fragment.setArguments(b);
+            android.support.v4.app.FragmentTransaction fragmentTransaction =
+                    ((FragmentActivity)con).getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.replace(R.id.frame_container,fragment);
+            fragmentTransaction.commit();
         }
         catch (Exception e)
         {
@@ -521,7 +600,7 @@ public class JSONParser {
                     gradeObjects[i]=new GradeObject(weightage,user_id,out_of,registered_course_id,score,id,name_course);
                 }
 
-                //Tools.showAlertDialog(" Grade len: "+ gradeObjects.length,con);
+                ////Tools.showAlertDialog(" Grade len: "+ gradeObjects.length,con);
                 gradeObjList=new ArrayList<GradeObject>(Arrays.asList(gradeObjects));
                 Bundle bundle=new Bundle();
                 bundle.putParcelableArrayList("grade",gradeObjList);
@@ -534,9 +613,9 @@ public class JSONParser {
                 fragmentTransaction.commit();
 
                 // do something with NotificationObjectArray
-                //Tools.showAlertDialog(submissionObjects.length+" : length",con);
-                Log.i("rajat"," Grade len: "+ gradeObjects.length);
-                Tools.showAlertDialog(" Grade len: "+ gradeObjects.length,con);
+                ////Tools.showAlertDialog(submissionObjects.length+" : length",con);
+                Log.i("rajat", " Grade len: " + gradeObjects.length);
+                //Tools.showAlertDialog(" Grade len: "+ gradeObjects.length,con);
             }
 
             if (resultJson.has("registered")){
@@ -613,7 +692,8 @@ public class JSONParser {
                     if(courseThreadObj.has("id")){id_thread=courseThreadObj.getInt("id");}
                     if(courseThreadObj.has("user_id")){user_id_thread=courseThreadObj.getInt("user_id");}
                     if(courseThreadObj.has("title")){title=courseThreadObj.getString("title");}
-                    if(courseThreadObj.has("description")){description=courseThreadObj.getString("description");}
+                    if(courseThreadObj.has("description")){description=courseThreadObj.getString("description");
+                    }
                     if(courseThreadObj.has("created_at")){created_at=courseThreadObj.getString("created_at");}
                     if(courseThreadObj.has("updated_at")){updated_at=courseThreadObj.getString("updated_at");}
                     if(courseThreadObj.has("registered_course_id")){registered_course_id_thread=courseThreadObj.getInt("registered_course_id");}
@@ -634,7 +714,7 @@ public class JSONParser {
                 // do something with NotificationObjectArray
                 //Tools.showAlertDialog(submissionObjects.length+" : length",con);
                 Log.i("rajat"," courseThread len: "+ courseThreadObjects.length);
-                Tools.showAlertDialog(" courseThread len: "+ courseThreadObjects.length,con);
+                Tools.showAlertDialog(" courseThread len: " + courseThreadObjects.length, con);
             }
 
             if (resultJson.has("registered")){
@@ -674,6 +754,7 @@ public class JSONParser {
         }
 
     }
+
     public static void viewParticularThreadApiJsonParser(String JsonStringResult,Context con)
     {
         try {
@@ -817,7 +898,7 @@ public class JSONParser {
                     if (resultJson.has("thread_id"))
                     {
                         thread_id=resultJson.getInt("thread_id");
-                        Tools.showAlertDialog(" Thread ID: "+ thread_id,con);
+                        //Tools.showAlertDialog(" Thread ID: "+ thread_id,con);
                     }
                 }
 
@@ -885,7 +966,8 @@ public class JSONParser {
                         comment=new CommentsObject(user_id,thread_id,id_comment,description_comment,created_at_comment);
 
                     }
-                    Tools.showAlertDialog(id_comment + description_comment + entry_no, con);
+                   // VolleyClick.viewParticularThread();
+                    //Tools.showAlertDialog(id_comment + description_comment + entry_no, con);
                 }
 
             }

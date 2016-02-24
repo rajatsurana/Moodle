@@ -9,4 +9,13 @@
         android:paddingTop="52dp"
         android:paddingLeft="3dp"/>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fabThread"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@android:drawable/ic_input_add" />
 </FrameLayout>

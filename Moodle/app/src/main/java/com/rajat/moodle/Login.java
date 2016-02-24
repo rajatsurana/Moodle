@@ -21,10 +21,24 @@ public class Login extends Activity {
     public static final String MyPREFERENCES = "MyPrefs" ;
     public static SharedPreferences sharedpreferences;
     public static SharedPreferences.Editor editor ;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if(getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE)!=null) {
+            if(!getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE).getString("Set-Cookie","").equals("")) {
+                Intent openH = new Intent(Login.this, After_login.class);
+                startActivity(openH);
+            }
+        }
+
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_ac);
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
         /*Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         titleId = getResources().getIdentifier("action_bar_title", "id", "android");

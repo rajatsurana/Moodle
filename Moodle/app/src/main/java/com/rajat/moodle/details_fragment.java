@@ -66,7 +66,7 @@ public class details_fragment extends Fragment {
         grades=(TextView) v.findViewById(R.id.grade);
         threads=(TextView) v.findViewById(R.id.threads);
         course_description.setText("Course Description: "+course_descrip);
-       // course_description.setOnClickListener(textviewlistner);
+        // course_description.setOnClickListener(textviewlistner);
         grades.setOnClickListener(textviewlistner);
         assignment.setOnClickListener(textviewlistner);
         threads.setOnClickListener(textviewlistner);
@@ -83,16 +83,16 @@ public class details_fragment extends Fragment {
         }
     }
 
- /*   @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }*/
+    /*   @Override
+       public void onAttach(Context context) {
+           super.onAttach(context);
+           if (context instanceof OnFragmentInteractionListener) {
+               mListener = (OnFragmentInteractionListener) context;
+           } else {
+               throw new RuntimeException(context.toString()
+                       + " must implement OnFragmentInteractionListener");
+           }
+       }*/
     View.OnClickListener textviewlistner=new View.OnClickListener() {
         @Override
         public void onClick(View view) {

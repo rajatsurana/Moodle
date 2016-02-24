@@ -2,6 +2,7 @@ package com.rajat.moodle.Volley;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -95,7 +96,10 @@ public class CallVolley {
                                         Login.editor = Login.sharedpreferences.edit();
                                         Login.editor.putString("Set-Cookie","");
                                         Login.editor.apply();
+
                                         pDialog.dismiss();
+                                        Intent openH = new Intent (context, Login.class);
+                                        context.startActivity(openH);
                                 }
                                 catch (Exception localException)
                                 {
@@ -165,6 +169,7 @@ public class CallVolley {
                                                 case 10:
                                                         JSONParser.postNewCommentApiJsonParser(response, context);
                                                         break;
+                                                case 11: JSONParser.NotificationApiJsonParserService(response,context);
                                         }
                                         Log.i("rajat", " onResponseActive " + response);
 

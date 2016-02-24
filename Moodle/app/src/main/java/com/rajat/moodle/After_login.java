@@ -1,6 +1,9 @@
 package com.rajat.moodle;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -14,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rajat.moodle.Objects.UsersObject;
@@ -23,21 +27,53 @@ public class After_login extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Intent i;
     public static boolean courselist;
-
+    public static Context context;
     @Override
     protected void onStart() {
         super.onStart();
         i=getIntent();
         if(i!=null){
             Log.i("rajat",i.getStringExtra("entry_no")+" "+i.getStringExtra("email"));
+            String username =i.getStringExtra("userName");
+            String email = i.getStringExtra("email");
+            String entry_no =i.getStringExtra("entry_no");
+
+            SharedPreferences.Editor editor = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE).edit();
+            editor.putString("userName", username);
+            editor.putString("email", email);
+            editor.putString("entry_no", entry_no);
+            editor.apply();
         }
         else{
             Toast.makeText(getApplicationContext(), "yahan prob hai", Toast.LENGTH_SHORT).show();
         }
+
+        if(!isMyServiceRunning(com.rajat.moodle.service.backgroundservice.class))
+        {
+            Log.i("rajat", "isMyServiceRunning is false ");
+            Intent intent = new Intent(After_login.this, com.rajat.moodle.service.backgroundservice.class);
+            startService(intent);
+
+        }
     }
 
 
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        try {
+            ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+            for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+                if (serviceClass.getName().equals(service.service.getClassName())) {
+                    return true;
+                }
+            }
 
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return false;
+
+    }
     boolean logout_press = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +84,11 @@ public class After_login extends AppCompatActivity
         setContentView(R.layout.activity_after_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        context =After_login.this;
+        if(i!=null){
 
+        }
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -67,7 +98,16 @@ public class After_login extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        TextView name_user = (TextView)findViewById(R.id.name_user);
+        TextView email_user = (TextView)findViewById(R.id.email_user);
+        SharedPreferences sp = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        Log.i("rajat","sp: " +sp.getAll().size());
+        if(sp.contains("userName")&&sp.contains("email")){
+if(name_user!=null)
+            name_user.setText(sp.getString("userName", ""));
+            if(email_user!=null)
+            email_user.setText(sp.getString("email", ""));
+        }
 
 
     }
@@ -113,12 +153,7 @@ public class After_login extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_notification) {
-            universal_fragment fragment = new universal_fragment();
-
-            android.support.v4.app.FragmentTransaction fragmentTransaction =
-                    getSupportFragmentManager().beginTransaction();
-            fragmentTransaction.replace(R.id.frame_container,fragment);
-            fragmentTransaction.commit();
+            VolleyClick.onNotifyClick(After_login.this);
 
         } else if (id == R.id.nav_courses) {
             courselist = true;
@@ -128,8 +163,8 @@ public class After_login extends AppCompatActivity
             VolleyClick.listAllCourses(After_login.this);
         }else if (id == R.id.nav_logout) {
             logout_press = true;
-            Intent openH = new Intent (this, Login.class);
-            startActivityForResult(openH,0);
+            VolleyClick.onLogoutClick(After_login.this);
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
