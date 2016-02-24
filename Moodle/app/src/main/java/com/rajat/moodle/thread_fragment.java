@@ -38,6 +38,7 @@ public class thread_fragment extends Fragment implements AbsListView.OnItemClick
     Bundle bundle;
     private OnFragmentInteractionListener mListener;
     ArrayList<CourseThreadObject> values=new ArrayList<CourseThreadObject>();
+    public String couse_code;
 
     boolean desc_thread_also=false;
     boolean title_thread_also=false;
@@ -75,6 +76,7 @@ FloatingActionButton fab;
                              Bundle savedInstanceState) {
         bundle=getArguments();
         values=bundle.getParcelableArrayList("thread");
+        couse_code=bundle.getString("course_code");
         View view = inflater.inflate(R.layout.fragment_thread_fragmentlist, container, false);
         fab=(FloatingActionButton)view.findViewById(R.id.fabThread);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -198,7 +200,7 @@ FloatingActionButton fab;
                 String thread_title = input.getText().toString();
                 String thread_desc = input2.getText().toString();
                 if (!thread_title.equals("") && !thread_desc.equals("")) {
-                    VolleyClick.createNewThread(thread_title, thread_desc, "cop290", getActivity());
+                    VolleyClick.createNewThread(thread_title, thread_desc, couse_code, getActivity());
                 } else if (thread_title.equals("") && !thread_desc.equals("")) {
                     input.setError("Title required");
                 } else if (!thread_title.equals("") && thread_desc.equals("")) {

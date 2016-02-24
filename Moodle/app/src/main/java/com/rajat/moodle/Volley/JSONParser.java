@@ -703,6 +703,7 @@ public class JSONParser {
                 courseThreadObjList=new ArrayList<CourseThreadObject>(Arrays.asList(courseThreadObjects));
                 Bundle b=new Bundle();
                 b.putParcelableArrayList("thread",courseThreadObjList);
+                b.putString("course_code",VolleyClick.cou_code);
                 thread_fragment fragment=new thread_fragment();
                 fragment.setArguments(b);
                 android.support.v4.app.FragmentTransaction fragmentTransaction =

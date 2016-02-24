@@ -11,6 +11,7 @@ import com.rajat.moodle.Tools.Tools;
  */
 public class VolleyClick {
     public static CourseThreadObject object;
+    public static String cou_code;
     static int Notification=1,
             CourseAssignment=2,
             CourseList=3,
@@ -125,6 +126,7 @@ public class VolleyClick {
         String URL = "http://192.168.43.196/courses/course.json/"+courseCode+"/threads";
         if (!chkNet.checkNetwork()) {
             VolleySingleton.getInstance(context).getRequestQueue().getCache().clear();
+            cou_code=courseCode;
             CallVolley.afterLoginCall(URL, context, viewCourseThreads);
         } else {
             Tools.showAlertDialog("Internet Available", context);
